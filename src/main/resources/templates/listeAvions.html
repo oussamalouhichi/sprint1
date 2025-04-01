@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Avions</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+<body>
+    <!-- Replace template dynamically -->
+    <div th:replace="template"></div>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Liste des Avions
+            </div>
+            <div class="card-body">
+                <!-- Table to display the avions -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Modèle</th>
+                            <th>Autonomie</th>
+                            <th>Capacité</th>
+                            <th>Date de Fabrication</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a : ${avions.content}">
+                            <td th:text="${a.idAvion}"></td>
+                            <td th:text="${a.modele}"></td>
+                            <td th:text="${a.autonomie}"></td>
+                            <td th:text="${a.capacite}"></td>
+                            <td th:text="${a.dateFabrication}"></td>
+                            <td>
+                                <!-- Confirmation dialog for delete action -->
+                                <a class="btn btn-danger" 
+                                   onclick="return confirm('Etes-vous sûr ?')" 
+                                   th:href="@{supprimerAvion(id=${a.idAvion}, page=${currentPage}, size=${size})}">
+                                   Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <ul class="nav nav-pills">
+                    <li th:each="page, status : ${pages}">
+                        <a th:class="${status.index == currentPage ? 'btn btn-primary' : 'btn'}"
+                           th:href="@{listeAvions(page=${status.index}, size=${size})}"
+                           th:text="${status.index}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
